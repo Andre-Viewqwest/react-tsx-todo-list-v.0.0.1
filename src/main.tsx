@@ -1,10 +1,19 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import { createRoot } from "react-dom/client";
+import "./assets/css/index.css";
+import { MantineProvider } from "@mantine/core";
+import '@mantine/core/styles.css';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+import App from "./App";
+
+// import { UserProvider } from "./context/AuthContext";
+
+const rootElement = document.getElementById("root") as HTMLElement;
+if (rootElement) {
+  createRoot(rootElement).render(
+    //     <UserProvider>
+    <MantineProvider>
+      <App />
+    </MantineProvider>
+    //     </UserProvider>
+  );
+}
