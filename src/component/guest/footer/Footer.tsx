@@ -76,7 +76,10 @@ const Footer: React.FC = () => {
   return (
     <footer className="footer mt-20 pt-8 pb-8 bg-gray-100 border-t border-gray-300">
       <Container size="xl">
-        <Container className="flex flex-col md:flex-row items-center justify-between ">
+        <Container
+          className="flex flex-col md:flex-row items-center justify-between "
+          fluid
+        >
           <div className="logo flex flex-col">
             <h1 className="font-bold">TODO</h1>
             <Text className="mt-1 text-gray-600">
@@ -91,7 +94,7 @@ const Footer: React.FC = () => {
         <br />
         <hr />
         <br />
-        <Container className="flex justify-between items-center">
+        <Container className="flex justify-between items-center" fluid>
           <Text className="text-gray-600 text-sm">
             ©2024 TODO All rights reserved.
           </Text>

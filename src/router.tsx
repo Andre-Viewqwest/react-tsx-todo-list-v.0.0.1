@@ -7,6 +7,7 @@ import GuestLayout from "./layout/guest/GuestLayout";
 
 // Guest Views
 import HomeViews from "./views/guest/HomeViews";
+import LoginViews from "./views/guest/LoginViews";
 
 interface RouteConfig {
   path: string;
@@ -23,6 +24,10 @@ const routerConfig: Record<string, RouteConfig[]> = {
         {
           path: "/",
           element: <HomeViews />,
+        },
+        {
+          path: "/login",
+          element: <LoginViews />,
         },
       ],
     },
