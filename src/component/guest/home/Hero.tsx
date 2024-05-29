@@ -13,8 +13,8 @@ const Hero: React.FC = () => {
           <div className="">
             <Title className="text-light-dark font-Greycliff font-semibold text-4xl md:text-2xl">
               Todo List Hero - Your Ultimate Productivity Companion
-            </Title> 
-            
+            </Title>
+
             <Text className="text-dimmed mt-4">
               Build fully functional accessible web applications faster than
               ever – Mantine includes more than 120 customizable components and

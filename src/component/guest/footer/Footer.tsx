@@ -54,20 +54,20 @@ const Footer: React.FC = () => {
 
   const groups = data.map((group) => {
     const links = group.links.map((link, index) => (
-      <Link
-        key={index}
-        to={link.link}
-        className="text-gray-600 hover:underline"
-      >
-        {link.label}
-      </Link>
+      <div>
+        <Link
+          key={index}
+          to={link.link}
+          className="text-gray-600 hover:underline"
+        >
+          {link.label}
+        </Link>
+      </div>
     ));
 
     return (
       <div className="wrapper" key={group.title}>
-        <Link to="/" className="title">
-          {group.title}
-        </Link>
+        <h1 className="title">{group.title}</h1>
         {links}
       </div>
     );
@@ -76,22 +76,24 @@ const Footer: React.FC = () => {
   return (
     <footer className="footer mt-20 pt-8 pb-8 bg-gray-100 border-t border-gray-300">
       <Container size="xl">
-        <Container className="flex flex-col md:flex-row items-center justify-between">
-          <div className="logo max-w-200px flex items-center">
-            {/* <MantineLogo size={30} /> */}
-            <Text size="xs" className="description mt-1 text-gray-600">
-              Build fully functional accessible web applications faster than
-              ever
+        <Container className="flex flex-col md:flex-row items-center justify-between ">
+          <div className="logo flex flex-col">
+            <h1 className="font-bold">TODO</h1>
+            <Text className="mt-1 text-gray-600">
+              Build fully functional accessible <br /> web applications faster
+              than ever
             </Text>
           </div>
           <div className="groups hidden md:flex flex-wrap space-x-4">
             {groups}
           </div>
         </Container>
+        <br />
         <hr />
-        <Container className="flex justify-between items-center mt-4">
+        <br />
+        <Container className="flex justify-between items-center">
           <Text className="text-gray-600 text-sm">
-            © 2020 mantine.dev. All rights reserved.
+            ©2024 TODO All rights reserved.
           </Text>
           <Group gap={4} className="social">
             <ActionIcon size="lg" color="gray" variant="subtle">
