@@ -7,7 +7,11 @@ import GuestLayout from "./layout/guest/GuestLayout";
 
 // Guest Views
 import HomeViews from "./views/guest/HomeViews";
-import LoginViews from "./views/guest/LoginViews";
+import LoginViews from "./views/guest/authentication/LoginViews";
+import ResetPasswordViews from "./views/guest/authentication/ResetPasswordViews";
+import SignupViews from "./views/guest/authentication/SignupViews";
+import UpdatePasswordViews from "./views/guest/authentication/UpdatePasswordViews";
+import Verification from "./views/guest/authentication/VerificationViews";
 
 interface RouteConfig {
   path: string;
@@ -28,6 +32,22 @@ const routerConfig: Record<string, RouteConfig[]> = {
         {
           path: "/login",
           element: <LoginViews />,
+        },
+        {
+          path: "/signup",
+          element: <SignupViews />,
+        },
+        {
+          path: "/verification",
+          element: <Verification />,
+        },
+        {
+          path: "/reset-password",
+          element: <ResetPasswordViews />,
+        },
+        {
+          path: "/update-password",
+          element: <UpdatePasswordViews />,
         },
       ],
     },

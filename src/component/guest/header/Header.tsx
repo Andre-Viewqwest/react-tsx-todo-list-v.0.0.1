@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Group, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface LinkItem {
   link: string;
@@ -14,8 +14,13 @@ const links: LinkItem[] = [
 ];
 
 const Header: React.FC = () => {
-  const [active, setActive] = useState<string | null>("/");
+  const location = useLocation();
+  const [active, setActive] = useState<string | null>(null);
   const [opened, { toggle }] = useDisclosure(false);
+
+  useEffect(() => {
+    setActive(location.pathname);
+  }, [location]);
 
   const items = links.map((link) => (
     <Link
@@ -41,7 +46,9 @@ const Header: React.FC = () => {
           size="xl"
           className="h-full flex justify-between items-center"
         >
-          <h1 className="font-bold">TODO</h1>
+          <Link to="/" className="font-bold">
+            TODO
+          </Link>
           <div className="hidden md:flex">
             <Group gap={5}>{items}</Group>
           </div>

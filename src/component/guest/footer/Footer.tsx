@@ -49,9 +49,6 @@ const data: GroupData[] = [
 ];
 
 const Footer: React.FC = () => {
-  const [active, setActive] = useState<string | null>("/");
-  const [opened, { toggle }] = useDisclosure(false);
-
   const groups = data.map((group) => {
     const links = group.links.map((link, index) => (
       <div>

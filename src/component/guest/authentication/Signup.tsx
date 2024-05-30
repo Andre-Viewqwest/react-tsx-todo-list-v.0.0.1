@@ -1,8 +1,6 @@
 import {
   TextInput,
   PasswordInput,
-  Checkbox,
-  Anchor,
   Paper,
   Text,
   Container,
@@ -12,18 +10,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useForm, UseFormReturnType } from "@mantine/form";
 
-interface LoginFormValues {
+interface SignupFormValues {
   email: string;
   password: string;
-  remember: boolean;
+  confirmPassword: string;
 }
 
-const Login: React.FC = () => {
-  const form: UseFormReturnType<LoginFormValues> = useForm<LoginFormValues>({
+const Signup: React.FC = () => {
+  const form: UseFormReturnType<SignupFormValues> = useForm<SignupFormValues>({
     initialValues: {
       email: "",
       password: "",
-      remember: false,
+      confirmPassword: "",
     },
 
     validate: {
@@ -32,10 +30,12 @@ const Login: React.FC = () => {
         value.length >= 6
           ? null
           : "Password must be at least 6 characters long",
+      confirmPassword: (value, values) =>
+        value === values.password ? null : "Passwords do not match",
     },
   });
 
-  const handleSubmit = (values: LoginFormValues) => {
+  const handleSubmit = (values: SignupFormValues) => {
     // Handle form submission
     console.log(values);
   };
@@ -44,14 +44,17 @@ const Login: React.FC = () => {
     <>
       <Container size={420} className="my-36">
         <div className="text-center text-4xl font-bold">
-          <h1>Login</h1>
-          <Text c="dimmed" size="sm" ta="center" className="mt-4">
-            <div className="flex gap-2 mx-auto text-center items-center justify-center mt-4">
-              <span>Do not have an account yet?</span>
-              <Link to="/signup" className="text-blue-500 hover:underline">
-                Create account
-              </Link>
-            </div>
+          <h1>Sign up</h1>
+          <Text
+            c="dimmed"
+            size="sm"
+            mt="md"
+            className="flex gap-2 mx-auto text-center items-center justify-center"
+          >
+            <span>Already have an account?</span>
+            <Link to="/login" className="text-blue-500 hover:underline">
+              Login
+            </Link>
           </Text>
         </div>
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
@@ -69,20 +72,15 @@ const Login: React.FC = () => {
               mt="md"
               {...form.getInputProps("password")}
             />
-            <div className="mt-6 flex items-center justify-between">
-              <Checkbox
-                label="Remember me"
-                {...form.getInputProps("remember", { type: "checkbox" })}
-              />
-              <Link
-                to="/reset-password"
-                className="text-blue-500 hover:underline text-sm"
-              >
-                Forgot password?
-              </Link>
-            </div>
-            <Button fullWidth mt="xl" type="submit">
-              Login
+            <PasswordInput
+              label="Confirm Password"
+              placeholder="Your password"
+              required
+              mt="md"
+              {...form.getInputProps("confirmPassword")}
+            />
+            <Button fullWidth mt="md" type="submit">
+              Sign up
             </Button>
           </form>
         </Paper>
@@ -91,4 +89,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Signup;
