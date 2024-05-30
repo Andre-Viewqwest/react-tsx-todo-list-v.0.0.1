@@ -1,6 +1,7 @@
 // Layout
+import AdminLayout from "./layout/admin/AdminLayout";
 import GuestLayout from "./layout/guest/GuestLayout";
-// import AdminLayout from "./layout/admin/AdminLayout";
+import OverviewViews from "./views/admin/OverviewViews";
 
 // Component
 // import NotFound from "./z-global/NotFound";
@@ -51,28 +52,28 @@ const routerConfig: Record<string, RouteConfig[]> = {
         },
       ],
     },
-    // {
+    // {F
     //   path: "*",
     //   element: <NotFound />,
     // },
   ],
 
-  // admin: [
-  //   {
-  //     path: "/",
-  //     element: <AdminLayout />,
-  //     children: [
-  //       {
-  //         path: "/a",
-  //         element: <OverView />,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     path: "*",
-  //     element: <NotFound />,
-  //   },
-  // ],
+  admin: [
+    {
+      path: "/",
+      element: <AdminLayout />,
+      children: [
+        {
+          path: "/overview",
+          element: <OverviewViews />,
+        },
+      ],
+    },
+    // {
+    //   path: "*",
+    //   element: <NotFound />,
+    // },
+  ],
 };
 
 export default routerConfig;

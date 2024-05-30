@@ -6,7 +6,8 @@ import routerConfig from "./router";
 
 const App: React.FC = () => {
   const { user } = useContext(UserContext);
-  let selectedRoute = "guest";
+  // let selectedRoute = "guest";
+  let selectedRoute = "admin";
   const routingConfig = routerConfig[selectedRoute];
   return (
     <BrowserRouter>
