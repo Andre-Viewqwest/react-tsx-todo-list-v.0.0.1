@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Sidenav from "../../component/admin/sidenav/Sidenav";
+import Header from "../../component/admin/header/Header";
 const AdminLayout: React.FC = () => {
   return (
     <>
@@ -8,7 +9,8 @@ const AdminLayout: React.FC = () => {
           <Sidenav />
         </aside>
         <main>
-          <h1>Header</h1> <Outlet />
+          <Header />
+          <Outlet />
         </main>
       </div>
     </>

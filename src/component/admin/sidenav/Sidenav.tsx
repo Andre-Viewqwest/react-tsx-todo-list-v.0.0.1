@@ -1,10 +1,9 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Group,
   Code,
   ScrollArea,
-  rem,
-  UnstyledButton,
   Text,
   Collapse,
   ThemeIcon,
@@ -23,6 +22,7 @@ import {
   IconChevronLeft,
   IconChevronDown,
 } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 
 // UserButton Component
 const UserButton: React.FC = () => {
@@ -31,7 +31,10 @@ const UserButton: React.FC = () => {
       <Menu.Target>
         <Button variant="subtle">
           <Avatar radius="xl" />
-          <span className="ml-2">User Name</span>
+          <div className="flex flex-col items-start text-sm">
+            <span className="ml-2">John Doe</span>
+            <span className="ml-2">Admin</span>
+          </div>
         </Button>
       </Menu.Target>
 
@@ -48,6 +51,7 @@ const UserButton: React.FC = () => {
 interface LinksGroupProps {
   label: string;
   icon: React.FC<any>;
+  link: string;
   initiallyOpened?: boolean;
   links?: { label: string; link: string }[];
 }
@@ -55,33 +59,61 @@ interface LinksGroupProps {
 const LinksGroup: React.FC<LinksGroupProps> = ({
   label,
   icon: Icon,
+  link,
   initiallyOpened,
   links,
 }) => {
-  const [opened, setOpened] = useState(initiallyOpened || false);
+  const [opened, setOpened] = useState(
+    initiallyOpened ||
+      (links &&
+        links.some((subLink) => window.location.pathname === subLink.link))
+  );
+  const location = useLocation();
+
+  const isActive = (link: string) => location.pathname === link;
 
   return (
     <>
-      <UnstyledButton onClick={() => setOpened((o) => !o)} className="w-full">
-        <Group>
-          <Group>
+      <div
+        onClick={() => setOpened((o) => !o)}
+        className={`w-full p-2 cursor-pointer hover:bg-gray-100 ${
+          isActive(link) ? "bg-gray-100 text-blue-500" : ""
+        }`}
+      >
+        <Group justify="space-between" align="center">
+          <div className="flex items-center">
             <ThemeIcon variant="light">
               <Icon />
             </ThemeIcon>
-            <Text>{label}</Text>
-          </Group>
-          {links && (opened ? <IconChevronDown /> : <IconChevronLeft />)}
+            <Link to={link} className="pl-4">
+              {label}
+            </Link>
+          </div>
+          {links && (
+            <div className="transform transition-transform">
+              {opened ? <IconChevronDown /> : <IconChevronLeft />}
+            </div>
+          )}
         </Group>
-      </UnstyledButton>
-      {links && (
-        <Collapse in={opened}>
-          {links.map((link) => (
-            <Text key={link.label} className="pl-12 py-1">
-              {link.label}
-            </Text>
-          ))}
-        </Collapse>
-      )}
+      </div>
+
+      <div className="border-l border-gray-300 mx-auto ml-[23px]">
+        {links && (
+          <Collapse in={opened}>
+            {links.map((subLink) => (
+              <Link
+                to={subLink.link}
+                key={subLink.label}
+                className={`flex flex-col pl-12 py-1 hover:bg-gray-100 ${
+                  isActive(subLink.link) ? "bg-gray-100 text-blue-500" : ""
+                }`}
+              >
+                {subLink.label}
+              </Link>
+            ))}
+          </Collapse>
+        )}
+      </div>
     </>
   );
 };
@@ -89,45 +121,44 @@ const LinksGroup: React.FC<LinksGroupProps> = ({
 // Logo Component
 const Logo: React.FC = () => {
   return (
-    <div className="flex items-center">
-      <span className="font-bold text-xl">Brand</span>
+    <div className="flex items-center justify-between">
+      <span className="font-bold text-xl">Todo</span>
+      <Code fw={700}>v.0.0.1</Code>
     </div>
   );
 };
 
 // Sidenav Component
 const mockdata = [
-  { label: "Dashboard", icon: IconGauge },
+  { label: "Dashboard", icon: IconGauge, link: "/" },
   {
     label: "Market news",
     icon: IconNotes,
-    initiallyOpened: true,
     links: [
-      { label: "Overview", link: "/" },
-      { label: "Forecasts", link: "/" },
-      { label: "Outlook", link: "/" },
-      { label: "Real time", link: "/" },
+      { label: "Forecasts", link: "/forecasts" },
+      { label: "Outlook", link: "/outlook" },
+      { label: "Real time", link: "/realtime" },
     ],
   },
   {
     label: "Releases",
     icon: IconCalendarStats,
     links: [
-      { label: "Upcoming releases", link: "/" },
-      { label: "Previous releases", link: "/" },
-      { label: "Releases schedule", link: "/" },
+      { label: "Upcoming releases", link: "/upcoming-release" },
+      { label: "Previous releases", link: "/previous-release" },
+      { label: "Releases schedule", link: "/releases-release" },
     ],
   },
-  { label: "Analytics", icon: IconPresentationAnalytics },
-  { label: "Contracts", icon: IconFileAnalytics },
-  { label: "Settings", icon: IconAdjustments },
+  { label: "Analytics", icon: IconPresentationAnalytics, link: "/analytics" },
+  { label: "Contracts", icon: IconFileAnalytics, link: "/contracts" },
+  { label: "Settings", icon: IconAdjustments, link: "/settings" },
   {
     label: "Security",
     icon: IconLock,
     links: [
-      { label: "Enable 2FA", link: "/" },
-      { label: "Change password", link: "/" },
-      { label: "Recovery codes", link: "/" },
+      { label: "Enable 2FA", link: "/enable-2fa" },
+      { label: "Change password", link: "/change-password" },
+      { label: "Recovery codes", link: "/recovery-codes" },
     ],
   },
 ];
@@ -137,58 +168,23 @@ const Sidenav: React.FC = () => {
     <LinksGroup {...item} key={item.label} />
   ));
 
-  const navbarStyles: React.CSSProperties = {
-    backgroundColor: "var(--mantine-color-white, #fff)",
-    height: rem(800),
-    width: rem(300),
-    padding: "var(--mantine-spacing-md)",
-    paddingBottom: 0,
-    display: "flex",
-    flexDirection: "column",
-    borderRight: "1px solid var(--mantine-color-gray-3, #ccc)",
-  };
-
-  const headerStyles: React.CSSProperties = {
-    padding: `var(--mantine-spacing-md)`,
-    paddingTop: 0,
-    marginLeft: `calc(var(--mantine-spacing-md) * -1)`,
-    marginRight: `calc(var(--mantine-spacing-md) * -1)`,
-    color: `var(--mantine-color-black)`,
-    borderBottom: `1px solid var(--mantine-color-gray-3)`,
-  };
-
   const linksStyles: React.CSSProperties = {
     flex: 1,
     marginLeft: `calc(var(--mantine-spacing-md) * -1)`,
     marginRight: `calc(var(--mantine-spacing-md) * -1)`,
   };
 
-  const linksInnerStyles: React.CSSProperties = {
-    paddingTop: `var(--mantine-spacing-xl)`,
-    paddingBottom: `var(--mantine-spacing-xl)`,
-  };
-
-  const footerStyles: React.CSSProperties = {
-    marginLeft: `calc(var(--mantine-spacing-md) * -1)`,
-    marginRight: `calc(var(--mantine-spacing-md) * -1)`,
-    borderTop: `1px solid var(--mantine-color-gray-3)`,
-    padding: `var(--mantine-spacing-md)`,
-  };
-
   return (
-    <nav className="bg-white h-[800px] w-[300px] p-md pb-0 flex flex-col border-r border-gray-300">
-      <div className="p-md pt-0 -ml-md -mr-md text-black border-b border-gray-300">
-        <div className="flex items-center justify-between">
-          <Logo />
-          <Code fw={700}>v3.1.2</Code>
-        </div>
+    <nav className="bg-white w-[300px] p-2 flex flex-col border-r border-gray-300 h-screen fixed">
+      <div className="p-4 text-black border-b border-gray-300">
+        <Logo />
       </div>
 
-      <ScrollArea style={linksStyles}>
-        <div style={linksInnerStyles}>{links}</div>
+      <ScrollArea style={linksStyles} className="flex">
+        <div className="p-8">{links}</div>
       </ScrollArea>
 
-      <div style={footerStyles}>
+      <div className="p-4 text-black border-t border-gray-300">
         <UserButton />
       </div>
     </nav>

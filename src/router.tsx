@@ -64,7 +64,7 @@ const routerConfig: Record<string, RouteConfig[]> = {
       element: <AdminLayout />,
       children: [
         {
-          path: "/overview",
+          path: "/",
           element: <OverviewViews />,
         },
       ],
