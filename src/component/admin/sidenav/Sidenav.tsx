@@ -27,7 +27,7 @@ import {
 // UserButton Component
 const UserButton: React.FC = () => {
   return (
-    <Menu shadow="md" width={200}>
+    <Menu shadow="md">
       <Menu.Target>
         <Button variant="subtle">
           <Avatar radius="xl" />
@@ -76,7 +76,7 @@ const LinksGroup: React.FC<LinksGroupProps> = ({
       {links && (
         <Collapse in={opened}>
           {links.map((link) => (
-            <Text key={link.label} className="pl-9 pt-2">
+            <Text key={link.label} className="pl-12 py-1">
               {link.label}
             </Text>
           ))}
@@ -87,11 +87,10 @@ const LinksGroup: React.FC<LinksGroupProps> = ({
 };
 
 // Logo Component
-const Logo: React.FC<{ style?: React.CSSProperties }> = ({ style }) => {
+const Logo: React.FC = () => {
   return (
-    <div style={{ ...style }} className="flex items-center">
-      <img src="/path/to/logo.png" alt="Logo" className="w-30" />
-      <span className="font-bold text-2xl ml-2">Brand</span>
+    <div className="flex items-center">
+      <span className="font-bold text-xl">Brand</span>
     </div>
   );
 };
@@ -138,20 +137,58 @@ const Sidenav: React.FC = () => {
     <LinksGroup {...item} key={item.label} />
   ));
 
+  const navbarStyles: React.CSSProperties = {
+    backgroundColor: "var(--mantine-color-white, #fff)",
+    height: rem(800),
+    width: rem(300),
+    padding: "var(--mantine-spacing-md)",
+    paddingBottom: 0,
+    display: "flex",
+    flexDirection: "column",
+    borderRight: "1px solid var(--mantine-color-gray-3, #ccc)",
+  };
+
+  const headerStyles: React.CSSProperties = {
+    padding: `var(--mantine-spacing-md)`,
+    paddingTop: 0,
+    marginLeft: `calc(var(--mantine-spacing-md) * -1)`,
+    marginRight: `calc(var(--mantine-spacing-md) * -1)`,
+    color: `var(--mantine-color-black)`,
+    borderBottom: `1px solid var(--mantine-color-gray-3)`,
+  };
+
+  const linksStyles: React.CSSProperties = {
+    flex: 1,
+    marginLeft: `calc(var(--mantine-spacing-md) * -1)`,
+    marginRight: `calc(var(--mantine-spacing-md) * -1)`,
+  };
+
+  const linksInnerStyles: React.CSSProperties = {
+    paddingTop: `var(--mantine-spacing-xl)`,
+    paddingBottom: `var(--mantine-spacing-xl)`,
+  };
+
+  const footerStyles: React.CSSProperties = {
+    marginLeft: `calc(var(--mantine-spacing-md) * -1)`,
+    marginRight: `calc(var(--mantine-spacing-md) * -1)`,
+    borderTop: `1px solid var(--mantine-color-gray-3)`,
+    padding: `var(--mantine-spacing-md)`,
+  };
+
   return (
-    <nav className="bg-white dark:bg-dark-6 h-[800px] w-[300px] p-md pb-0 flex flex-col border-r border-gray-300 dark:border-dark-4">
-      <div className="p-md pt-0 -ml-md -mr-md text-black dark:text-white border-b border-gray-300 dark:border-dark-4">
-        <Group>
-          <Logo style={{ width: rem(120) }} />
+    <nav className="bg-white h-[800px] w-[300px] p-md pb-0 flex flex-col border-r border-gray-300">
+      <div className="p-md pt-0 -ml-md -mr-md text-black border-b border-gray-300">
+        <div className="flex items-center justify-between">
+          <Logo />
           <Code fw={700}>v3.1.2</Code>
-        </Group>
+        </div>
       </div>
 
-      <ScrollArea className="flex-1 -ml-md -mr-md">
-        <div className="py-xl">{links}</div>
+      <ScrollArea style={linksStyles}>
+        <div style={linksInnerStyles}>{links}</div>
       </ScrollArea>
 
-      <div className="mt-auto -ml-md -mr-md border-t border-gray-300 dark:border-dark-4">
+      <div style={footerStyles}>
         <UserButton />
       </div>
     </nav>
