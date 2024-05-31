@@ -132,21 +132,20 @@ const Logo: React.FC = () => {
 const mockdata = [
   { label: "Dashboard", icon: IconGauge, link: "/" },
   {
-    label: "Market news",
+    label: "Management",
     icon: IconNotes,
     links: [
-      { label: "Forecasts", link: "/forecasts" },
-      { label: "Outlook", link: "/outlook" },
-      { label: "Real time", link: "/realtime" },
+      { label: "Logs", link: "/logs" },
+      { label: "Accounts", link: "/accounts" },
     ],
   },
   {
     label: "Releases",
     icon: IconCalendarStats,
     links: [
-      { label: "Upcoming releases", link: "/upcoming-release" },
-      { label: "Previous releases", link: "/previous-release" },
-      { label: "Releases schedule", link: "/releases-release" },
+      { label: "Forecasts", link: "/forecasts" },
+      { label: "Outlook", link: "/outlook" },
+      { label: "Real time", link: "/realtime" },
     ],
   },
   { label: "Analytics", icon: IconPresentationAnalytics, link: "/analytics" },
