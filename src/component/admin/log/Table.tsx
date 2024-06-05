@@ -2,13 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import moment from "moment";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
-import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
 import { Button } from "@mantine/core";
+
+import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
+import SelectFilter from "@inovua/reactdatagrid-community/SelectFilter";
 
 interface DataItems {
   id: string;
   image: string;
   description: string;
+  role: string;
   created_at: string;
   updated_at: string;
 }
@@ -30,6 +33,7 @@ const Table: React.FC = () => {
       id: "1",
       image: "https://example.com/image.jpg",
       description: "A sample image description.",
+      role: "ADMIN",
       created_at: "2024-06-05 14:13:44",
       updated_at: "2024-06-05 14:13:44",
     },
@@ -37,32 +41,53 @@ const Table: React.FC = () => {
       id: "2",
       image: "https://example.com/another-image.jpg",
       description: "Another sample image description.",
+      role: "USER",
       created_at: "2024-06-04 14:14:08",
       updated_at: "2024-06-04 14:14:08",
     },
+    {
+      id: "3",
+      image: "https://example.com/another-image.jpg",
+      description: "Test Description",
+      role: "SUPER_ADMIN",
+      created_at: "2024-06-03 14:14:08",
+      updated_at: "2024-06-03 14:14:08",
+    },
   ]);
 
+  // CHANGES
   const filter = [
     { name: "id", operator: "startsWith", type: "string", value: "" },
     { name: "image", operator: "startsWith", type: "string", value: "" },
     { name: "description", operator: "startsWith", type: "string", value: "" },
+    {
+      name: "role",
+      operator: "inlist",
+      type: "select",
+      value: [],
+    },
     { name: "created_at", operator: "eq", type: "date", value: "" },
     { name: "updated_at", operator: "eq", type: "date", value: "" },
   ];
 
   useEffect(() => {
-    setFilteredData(data); // Initialize filtered data
+    setFilteredData(data);
   }, [data]);
 
   const onFilterValueChange = (newFilterValue: any) => {
-    const newFilteredData = data.filter((item) => {
+    const newFilteredData = data.filter((item: any) => {
       return newFilterValue.every((filter: any) => {
-        if (!filter.value) return true;
+        if (!filter.value || filter.value.length === 0) return true;
+
         const value = item[filter.name].toString();
+
         if (filter.operator === "startsWith") {
           return value.startsWith(filter.value);
         } else if (filter.operator === "eq" && filter.type === "date") {
           return moment(value).isSame(filter.value, "day");
+        } else if (filter.operator === "inlist" && filter.type === "select") {
+          // Check if the value matches any selected role in the filter
+          return filter.value.includes(value);
         }
         return true;
       });
@@ -70,6 +95,7 @@ const Table: React.FC = () => {
     setFilteredData(newFilteredData);
   };
 
+  // CHANGES
   const columns = [
     {
       name: "id",
@@ -95,6 +121,24 @@ const Table: React.FC = () => {
       cellProps: { align: "center" },
       shouldComponentUpdate,
     },
+    {
+      name: "role",
+      header: "Role",
+      minWidth: 50,
+      defaultFlex: 1,
+      cellProps: { align: "center" },
+      shouldComponentUpdate,
+      filterEditor: SelectFilter,
+      filterEditorProps: {
+        multiple: true,
+        wrapMultiple: false,
+        defaultValue: [],
+        dataSource: ["ADMIN", "USER", "SUPER_ADMIN"].map((c) => {
+          return { id: c, label: c };
+        }),
+      },
+    },
+
     {
       name: "created_at",
       header: "Created At",
@@ -171,6 +215,7 @@ const Table: React.FC = () => {
   };
 
   const exportCSV = () => {
+    // CHANGES | THIS IS SPECIFY THE DATA WANT TO EXPORT BASE ON COLUMNS
     const Columns = [
       { name: "id" },
       { name: "image" },
@@ -204,7 +249,9 @@ const Table: React.FC = () => {
       .toLowerCase();
     const day = date.getDate();
     const year = date.getFullYear();
-    const fileName = `users-radius-server-${month}-${day}-${year}.csv`;
+
+    // CHANGES | THIS IS FOR NAME
+    const fileName = `todo-${month}-${day}-${year}.csv`;
 
     downloadBlob(blob, fileName);
   };
