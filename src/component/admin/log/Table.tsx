@@ -21,14 +21,14 @@ const shouldComponentUpdate = () => true;
 const gridStyle: React.CSSProperties = { minHeight: 550 };
 
 const Table: React.FC = () => {
+  window.moment = moment;
   const gridRef = useRef<any>(null);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedRowIds, setSelectedRowIds] = useState<Set<string>>(new Set());
   const [filteredData, setFilteredData] = useState<DataItems[]>([]);
 
-  window.moment = moment;
-
-  const [data, setData] = useState<DataItems[]>([
+  // CHANGES | Put all data here
+  const [data] = useState<DataItems[]>([
     {
       id: "1",
       image: "https://example.com/image.jpg",
@@ -55,7 +55,7 @@ const Table: React.FC = () => {
     },
   ]);
 
-  // CHANGES
+  // CHANGES | Add filter here | Current filter are | SELECT | DATE | STRING |
   const filter = [
     { name: "id", operator: "startsWith", type: "string", value: "" },
     { name: "image", operator: "startsWith", type: "string", value: "" },
@@ -74,6 +74,7 @@ const Table: React.FC = () => {
     setFilteredData(data);
   }, [data]);
 
+  // CHANGES | When add filter add here also so when you export csv its included
   const onFilterValueChange = (newFilterValue: any) => {
     const newFilteredData = data.filter((item: any) => {
       return newFilterValue.every((filter: any) => {
@@ -81,12 +82,12 @@ const Table: React.FC = () => {
 
         const value = item[filter.name].toString();
 
+        // CHANGES | On this condition you put what you added filter
         if (filter.operator === "startsWith") {
           return value.startsWith(filter.value);
         } else if (filter.operator === "eq" && filter.type === "date") {
           return moment(value).isSame(filter.value, "day");
         } else if (filter.operator === "inlist" && filter.type === "select") {
-          // Check if the value matches any selected role in the filter
           return filter.value.includes(value);
         }
         return true;
@@ -95,7 +96,7 @@ const Table: React.FC = () => {
     setFilteredData(newFilteredData);
   };
 
-  // CHANGES
+  // CHANGES | This is for data of table and header
   const columns = [
     {
       name: "id",
