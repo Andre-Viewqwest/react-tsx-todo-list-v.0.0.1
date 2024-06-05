@@ -1,7 +1,6 @@
 // Layout
 import AdminLayout from "./layout/admin/AdminLayout";
 import GuestLayout from "./layout/guest/GuestLayout";
-import OverviewViews from "./views/admin/OverviewViews";
 
 // Component
 // import NotFound from "./z-global/NotFound";
@@ -12,7 +11,11 @@ import LoginViews from "./views/guest/authentication/LoginViews";
 import ResetPasswordViews from "./views/guest/authentication/ResetPasswordViews";
 import SignupViews from "./views/guest/authentication/SignupViews";
 import UpdatePasswordViews from "./views/guest/authentication/UpdatePasswordViews";
-import Verification from "./views/guest/authentication/VerificationViews";
+import VerificationViews from "./views/guest/authentication/VerificationViews";
+
+// Admin Views
+import LogsViews from "./views/admin/LogsViews";
+import OverviewViews from "./views/admin/OverviewViews";
 
 interface RouteConfig {
   path: string;
@@ -40,7 +43,7 @@ const routerConfig: Record<string, RouteConfig[]> = {
         },
         {
           path: "/verification",
-          element: <Verification />,
+          element: <VerificationViews />,
         },
         {
           path: "/reset-password",
@@ -66,6 +69,10 @@ const routerConfig: Record<string, RouteConfig[]> = {
         {
           path: "/",
           element: <OverviewViews />,
+        },
+        {
+          path: "/logs",
+          element: <LogsViews />,
         },
       ],
     },

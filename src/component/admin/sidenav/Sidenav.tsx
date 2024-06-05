@@ -139,27 +139,27 @@ const mockdata = [
       { label: "Accounts", link: "/accounts" },
     ],
   },
-  {
-    label: "Releases",
-    icon: IconCalendarStats,
-    links: [
-      { label: "Forecasts", link: "/forecasts" },
-      { label: "Outlook", link: "/outlook" },
-      { label: "Real time", link: "/realtime" },
-    ],
-  },
-  { label: "Analytics", icon: IconPresentationAnalytics, link: "/analytics" },
-  { label: "Contracts", icon: IconFileAnalytics, link: "/contracts" },
-  { label: "Settings", icon: IconAdjustments, link: "/settings" },
-  {
-    label: "Security",
-    icon: IconLock,
-    links: [
-      { label: "Enable 2FA", link: "/enable-2fa" },
-      { label: "Change password", link: "/change-password" },
-      { label: "Recovery codes", link: "/recovery-codes" },
-    ],
-  },
+  // {
+  //   label: "Releases",
+  //   icon: IconCalendarStats,
+  //   links: [
+  //     { label: "Forecasts", link: "/forecasts" },
+  //     { label: "Outlook", link: "/outlook" },
+  //     { label: "Real time", link: "/realtime" },
+  //   ],
+  // },
+  // { label: "Analytics", icon: IconPresentationAnalytics, link: "/analytics" },
+  // { label: "Contracts", icon: IconFileAnalytics, link: "/contracts" },
+  // { label: "Settings", icon: IconAdjustments, link: "/settings" },
+  // {
+  //   label: "Security",
+  //   icon: IconLock,
+  //   links: [
+  //     { label: "Enable 2FA", link: "/enable-2fa" },
+  //     { label: "Change password", link: "/change-password" },
+  //     { label: "Recovery codes", link: "/recovery-codes" },
+  //   ],
+  // },
 ];
 
 const Sidenav: React.FC = () => {
