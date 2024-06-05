@@ -4,21 +4,14 @@ import {
   Group,
   Code,
   ScrollArea,
-  Text,
   Collapse,
   ThemeIcon,
   Avatar,
-  Button,
   Menu,
 } from "@mantine/core";
 import {
   IconNotes,
-  IconCalendarStats,
   IconGauge,
-  IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
   IconChevronLeft,
   IconChevronDown,
 } from "@tabler/icons-react";
@@ -29,16 +22,16 @@ const UserButton: React.FC = () => {
   return (
     <Menu shadow="md">
       <Menu.Target>
-        <Button variant="subtle">
+        <div className="flex cursor-pointer">
           <Avatar radius="xl" />
           <div className="flex flex-col items-start text-sm">
             <span className="ml-2">John Doe</span>
             <span className="ml-2">Admin</span>
           </div>
-        </Button>
+        </div>
       </Menu.Target>
 
-      <Menu.Dropdown>
+      <Menu.Dropdown style={{ width: "200px" }}>
         <Menu.Label>Settings</Menu.Label>
         <Menu.Item>Profile</Menu.Item>
         <Menu.Item>Logout</Menu.Item>

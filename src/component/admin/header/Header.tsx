@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Container,
   Group,
@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBell, IconCake, IconCircleCheck } from "@tabler/icons-react";
+import { HamburgerContext } from "../../../context/HamburgerContext";
 
 interface LinkItem {
   icon: React.JSX.Element;
@@ -20,6 +21,7 @@ interface LinkItem {
 }
 
 const Header: React.FC = () => {
+  const { setHamburger } = useContext(HamburgerContext);
   const [opened, { toggle }] = useDisclosure(false);
 
   const links: LinkItem[] = [
@@ -137,18 +139,26 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="fixed left-[300px] right-0 h-[69px] mx-1 mb-30 bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 z-50">
+      <header className="md:fixed left-[300px] right-0 h-[69px] mx-1 mb-30 bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 z-50">
         <Container fluid className="h-full flex justify-between items-center">
-          <div className="font-bold hidden md:block">TODO</div>
-          <div className="hidden md:flex">
-            <Group gap={5}>{items}</Group>
+          <div className="flex">
+            <div className="font-bold md:hidden">TODO</div>
           </div>
-          <Burger
-            opened={opened}
-            onClick={toggle}
-            className="md:hidden"
-            size="sm"
-          />
+          <div className="flex gap-2 items-center">
+            <Group gap={5}>{items}</Group>
+            <Burger
+              opened={opened}
+              onClick={() => {
+                toggle();
+                setHamburger((prev) => ({
+                  ...prev,
+                  isOpen: true,
+                }));
+              }}
+              className="md:hidden"
+              size="sm"
+            />
+          </div>
         </Container>
       </header>
     </>
