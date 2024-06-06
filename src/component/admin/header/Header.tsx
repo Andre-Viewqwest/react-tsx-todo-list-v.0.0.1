@@ -10,7 +10,7 @@ import {
   Badge,
   Button,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconBell, IconCake, IconCircleCheck } from "@tabler/icons-react";
 import { HamburgerContext } from "../../../context/HamburgerContext";
 
@@ -21,6 +21,7 @@ interface LinkItem {
 }
 
 const Header: React.FC = () => {
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const { setHamburger } = useContext(HamburgerContext);
   const [opened, { toggle }] = useDisclosure(false);
 
@@ -82,7 +83,7 @@ const Header: React.FC = () => {
   const items = links.map((link) => (
     <Popover
       key={link.label}
-      width={400}
+      width={isMobile ? 300 : 400} // Conditionally set the width
       position="bottom"
       withArrow
       shadow="md"
