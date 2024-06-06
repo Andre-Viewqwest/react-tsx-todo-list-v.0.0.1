@@ -61,7 +61,7 @@ const routerConfig: Record<string, RouteConfig[]> = {
     // },
   ],
 
-  admin: [
+  auth: [
     {
       path: "/",
       element: <AdminLayout />,

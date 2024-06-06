@@ -6,6 +6,7 @@ import { Button } from "@mantine/core";
 
 import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
 import SelectFilter from "@inovua/reactdatagrid-community/SelectFilter";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface DataItems {
   id: string;
@@ -21,6 +22,7 @@ const shouldComponentUpdate = () => true;
 const gridStyle: React.CSSProperties = { minHeight: 550 };
 
 const Table: React.FC = () => {
+  const isMobile = useMediaQuery("(max-width: 767px)");
   window.moment = moment;
   const gridRef = useRef<any>(null);
   const [selectAll, setSelectAll] = useState(false);
@@ -98,35 +100,35 @@ const Table: React.FC = () => {
 
   // CHANGES | This is for data of table and header
   const columns = [
-    {
-      name: "id",
-      header: "Id",
-      minWidth: 50,
-      defaultFlex: 1,
-      cellProps: { align: "center" },
-      shouldComponentUpdate,
-    },
+    // {
+    //   name: "id",
+    //   header: "Id",
+    //   minWidth: 50,
+    //   defaultFlex: 1,
+    //   cellProps: { align: "center" },
+    //   shouldComponentUpdate,
+    // },
     {
       name: "image",
       header: "Image",
-      minWidth: 50,
-      defaultFlex: 1,
+      minWidth: isMobile ? 300 : 50,
+      defaultFlex: isMobile ? undefined : 1,
       cellProps: { align: "center" },
       shouldComponentUpdate,
     },
     {
       name: "description",
       header: "Description",
-      minWidth: 50,
-      defaultFlex: 1,
+      minWidth: isMobile ? 300 : 50,
+      defaultFlex: isMobile ? undefined : 1,
       cellProps: { align: "center" },
       shouldComponentUpdate,
     },
     {
       name: "role",
       header: "Role",
-      minWidth: 50,
-      defaultFlex: 1,
+      minWidth: isMobile ? 300 : 50,
+      defaultFlex: isMobile ? undefined : 1,
       cellProps: { align: "center" },
       shouldComponentUpdate,
       filterEditor: SelectFilter,
@@ -143,8 +145,8 @@ const Table: React.FC = () => {
     {
       name: "created_at",
       header: "Created At",
-      minWidth: 50,
-      defaultFlex: 1,
+      minWidth: isMobile ? 300 : 50,
+      defaultFlex: isMobile ? undefined : 1,
       cellProps: { align: "center" },
       shouldComponentUpdate,
       filterEditor: DateFilter,
@@ -156,8 +158,8 @@ const Table: React.FC = () => {
     {
       name: "updated_at",
       header: "Updated At",
-      minWidth: 50,
-      defaultFlex: 1,
+      minWidth: isMobile ? 300 : 50,
+      defaultFlex: isMobile ? undefined : 1,
       cellProps: { align: "center" },
       shouldComponentUpdate,
       filterEditor: DateFilter,
