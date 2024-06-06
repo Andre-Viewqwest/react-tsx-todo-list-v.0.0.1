@@ -22,7 +22,7 @@ const shouldComponentUpdate = () => true;
 const gridStyle: React.CSSProperties = { minHeight: 550 };
 
 const Table: React.FC = () => {
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 1024px)");
   window.moment = moment;
   const gridRef = useRef<any>(null);
   const [selectAll, setSelectAll] = useState(false);

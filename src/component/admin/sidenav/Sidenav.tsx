@@ -67,28 +67,28 @@ const LinksGroup: React.FC<LinksGroupProps> = ({
 
   return (
     <>
-      <div
-        onClick={() => setOpened((o) => !o)}
-        className={`w-full p-2 cursor-pointer hover:bg-gray-100 ${
-          isActive(link) ? "bg-gray-100 text-blue-500" : ""
-        }`}
-      >
-        <Group justify="space-between" align="center">
-          <div className="flex items-center">
-            <ThemeIcon variant="light">
-              <Icon />
-            </ThemeIcon>
-            <Link to={link} className="pl-4">
-              {label}
-            </Link>
-          </div>
-          {links && (
-            <div className="transform transition-transform">
-              {opened ? <IconChevronDown /> : <IconChevronLeft />}
+      <Link to={link} className="flex items-center">
+        <div
+          onClick={() => setOpened((o) => !o)}
+          className={`w-full p-2 cursor-pointer hover:bg-gray-100 ${
+            isActive(link) ? "bg-gray-100 text-blue-500" : ""
+          }`}
+        >
+          <Group justify="space-between" align="center">
+            <div className="flex items-center">
+              <ThemeIcon variant="light">
+                <Icon />
+              </ThemeIcon>
+              <span className="pl-4">{label}</span>
             </div>
-          )}
-        </Group>
-      </div>
+            {links && (
+              <div className="transform transition-transform">
+                {opened ? <IconChevronDown /> : <IconChevronLeft />}
+              </div>
+            )}
+          </Group>
+        </div>
+      </Link>
 
       <div className="border-l border-gray-300 mx-auto ml-[23px]">
         {links && (

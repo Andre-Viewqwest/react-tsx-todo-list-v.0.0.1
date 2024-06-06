@@ -3,8 +3,10 @@ import { Outlet } from "react-router-dom";
 import Sidenav from "../../component/admin/sidenav/Sidenav";
 import Header from "../../component/admin/header/Header";
 import { HamburgerContext } from "../../context/HamburgerContext";
+import { useMediaQuery } from "@mantine/hooks";
 
 const AdminLayout: React.FC = () => {
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const { hamburger } = useContext(HamburgerContext);
 
   // Log the hamburger state whenever it changes
@@ -15,12 +17,16 @@ const AdminLayout: React.FC = () => {
   return (
     <>
       <div className="w-full">
-        <aside className={`${hamburger.isOpen ? "hidden" : ""} md:block relative z-50`}>
+        <aside
+          className={`${
+            !hamburger.isOpen ? "hidden" : ""
+          } md:block relative z-50`}
+        >
           <Sidenav />
         </aside>
         <main>
           <Header />
-          <div className={`${!hamburger.isOpen ? "hidden" : ""}`}>
+          <div className={`${hamburger.isOpen ? "hidden" : ""}`}>
             <Outlet />
           </div>
         </main>

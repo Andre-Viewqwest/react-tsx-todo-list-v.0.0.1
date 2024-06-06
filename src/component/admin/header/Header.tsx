@@ -22,8 +22,8 @@ interface LinkItem {
 
 const Header: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const { setHamburger } = useContext(HamburgerContext);
-  const [opened, { toggle }] = useDisclosure(false);
+  const { hamburger, setHamburger } = useContext(HamburgerContext);
+  const [opened, { toggle }] = useDisclosure(hamburger.isOpen);
 
   const links: LinkItem[] = [
     { icon: <IconBell />, label: "Notification", badgeContent: "5" },
