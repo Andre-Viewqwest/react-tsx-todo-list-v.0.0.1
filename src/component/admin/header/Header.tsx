@@ -152,7 +152,7 @@ const Header: React.FC = () => {
                 toggle();
                 setHamburger((prev) => ({
                   ...prev,
-                  isOpen: true,
+                  isOpen: !prev.isOpen,
                 }));
               }}
               className="md:hidden"

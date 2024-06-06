@@ -1,17 +1,28 @@
+import { useContext, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Sidenav from "../../component/admin/sidenav/Sidenav";
 import Header from "../../component/admin/header/Header";
+import { HamburgerContext } from "../../context/HamburgerContext";
 
 const AdminLayout: React.FC = () => {
+  const { hamburger } = useContext(HamburgerContext);
+
+  // Log the hamburger state whenever it changes
+  useEffect(() => {
+    console.log();
+  }, [hamburger]);
+
   return (
     <>
       <div className="w-full">
-        <aside className="hidden md:block">
+        <aside className={`${hamburger.isOpen ? "hidden" : ""} md:block relative z-50`}>
           <Sidenav />
         </aside>
         <main>
           <Header />
-          <Outlet />
+          <div className={`${!hamburger.isOpen ? "hidden" : ""}`}>
+            <Outlet />
+          </div>
         </main>
       </div>
     </>
