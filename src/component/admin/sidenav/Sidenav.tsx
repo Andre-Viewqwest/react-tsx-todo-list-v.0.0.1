@@ -30,7 +30,7 @@ interface LinksGroupProps {
 }
 
 const mockDataUserButton = [
-  // { label: "Dashboard", icon: IconGauge, link: "/" },
+  { label: "Dashboard", icon: IconGauge, link: "/" },
   {
     label: "Settings",
     icon: IconNotes,
@@ -42,6 +42,10 @@ const mockDataUserButton = [
 ];
 
 const UserButton: React.FC = () => {
+  const location = useLocation();
+
+  const isActive = (link: string) => location.pathname === link;
+
   return (
     <Menu shadow="md">
       <Menu.Target>
@@ -61,12 +65,24 @@ const UserButton: React.FC = () => {
             <Menu.Label>{item.label}</Menu.Label>
             {item.links ? (
               item.links.map((linkItem, linkIndex) => (
-                <Link to={linkItem.link}>
-                  <Menu.Item key={linkIndex}>{linkItem.label}</Menu.Item>
+                <Link to={linkItem.link} key={linkIndex}>
+                  <Menu.Item
+                    className={`${
+                      isActive(linkItem.link) ? "bg-gray-100 text-blue-500" : ""
+                    }`}
+                  >
+                    {linkItem.label}
+                  </Menu.Item>
                 </Link>
               ))
             ) : (
-              <Menu.Item>{item.label}</Menu.Item>
+              <Menu.Item
+                className={`${
+                  isActive(item.link) ? "bg-gray-100 text-blue-500" : ""
+                }`}
+              >
+                {item.label}
+              </Menu.Item>
             )}
           </React.Fragment>
         ))}
