@@ -151,7 +151,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="md:fixed left-[300px] right-0 h-[69px] mx-1 mb-30 bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 z-50">
+      <header className="fixed left-0 right-0 md:left-[300px] md:right-0 h-[69px] mx-1 mb-30 bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 z-50">
         <Container fluid className="h-full flex justify-between items-center">
           <div className="flex">
             <div className="font-bold">{pathname}</div>

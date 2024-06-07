@@ -28,8 +28,8 @@ const UserButton: React.FC = () => {
         <div className="flex cursor-pointer">
           <Avatar radius="xl" />
           <div className="flex flex-col items-start text-sm">
-            <span className="ml-2">John Doe</span>
-            <span className="ml-2">Admin</span>
+            <span className="ml-2 text-md">John Doe</span>
+            <span className="ml-2 text-gray-500">Admin</span>
           </div>
         </div>
       </Menu.Target>
