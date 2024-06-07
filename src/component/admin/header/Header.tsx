@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Container,
   Group,
@@ -13,6 +13,7 @@ import {
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconBell, IconCake, IconCircleCheck } from "@tabler/icons-react";
 import { HamburgerContext } from "../../../context/HamburgerContext";
+import { useLocation } from "react-router-dom";
 
 interface LinkItem {
   icon: React.JSX.Element;
@@ -22,8 +23,18 @@ interface LinkItem {
 
 const Header: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const location = useLocation();
+
   const { hamburger, setHamburger } = useContext(HamburgerContext);
-  const [opened, { toggle }] = useDisclosure(hamburger.isOpen);
+  const [pathname, setPathname] = useState<string>(location.pathname);
+
+  useEffect(() => {
+    const currentPathname = location.pathname.slice(1);
+    const capitalizedPathname =
+      currentPathname.charAt(0).toUpperCase() +
+      currentPathname.slice(1).toLowerCase();
+    setPathname(capitalizedPathname == "" ? "Dashboard" : capitalizedPathname);
+  }, [location]);
 
   const links: LinkItem[] = [
     { icon: <IconBell />, label: "Notification", badgeContent: "5" },
@@ -143,14 +154,13 @@ const Header: React.FC = () => {
       <header className="md:fixed left-[300px] right-0 h-[69px] mx-1 mb-30 bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700 z-50">
         <Container fluid className="h-full flex justify-between items-center">
           <div className="flex">
-            <div className="font-bold md:hidden">TODO</div>
+            <div className="font-bold">{pathname}</div>
           </div>
           <div className="flex gap-2 items-center">
             <Group gap={5}>{items}</Group>
             <Burger
-              opened={opened}
+              opened={hamburger.isOpen}
               onClick={() => {
-                toggle();
                 setHamburger((prev) => ({
                   ...prev,
                   isOpen: !prev.isOpen,

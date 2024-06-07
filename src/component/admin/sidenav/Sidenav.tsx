@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   Group,
@@ -16,6 +16,9 @@ import {
   IconChevronDown,
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
+import { useMediaQuery } from "@mantine/hooks";
+
+import { HamburgerContext } from "../../../context/HamburgerContext";
 
 // UserButton Component
 const UserButton: React.FC = () => {
@@ -67,28 +70,53 @@ const LinksGroup: React.FC<LinksGroupProps> = ({
 
   return (
     <>
-      <Link to={link} className="flex items-center">
-        <div
-          onClick={() => setOpened((o) => !o)}
-          className={`w-full p-2 cursor-pointer hover:bg-gray-100 ${
-            isActive(link) ? "bg-gray-100 text-blue-500" : ""
-          }`}
-        >
-          <Group justify="space-between" align="center">
-            <div className="flex items-center">
-              <ThemeIcon variant="light">
-                <Icon />
-              </ThemeIcon>
-              <span className="pl-4">{label}</span>
-            </div>
-            {links && (
-              <div className="transform transition-transform">
-                {opened ? <IconChevronDown /> : <IconChevronLeft />}
+      {typeof link === "string" ? (
+        <Link to={link} className="flex items-center">
+          <div
+            onClick={() => setOpened((o) => !o)}
+            className={`w-full p-2 cursor-pointer hover:bg-gray-100 ${
+              isActive(link) ? "bg-gray-100 text-blue-500" : ""
+            }`}
+          >
+            <Group justify="space-between" align="center">
+              <div className="flex items-center">
+                <ThemeIcon variant="light">
+                  <Icon />
+                </ThemeIcon>
+                <span className="pl-4">{label}</span>
               </div>
-            )}
-          </Group>
+              {links && (
+                <div className="transform transition-transform">
+                  {opened ? <IconChevronDown /> : <IconChevronLeft />}
+                </div>
+              )}
+            </Group>
+          </div>
+        </Link>
+      ) : (
+        <div className="flex items-center">
+          <div
+            onClick={() => setOpened((o) => !o)}
+            className={`w-full p-2 cursor-pointer hover:bg-gray-100 ${
+              isActive(link) ? "bg-gray-100 text-blue-500" : ""
+            }`}
+          >
+            <Group justify="space-between" align="center">
+              <div className="flex items-center">
+                <ThemeIcon variant="light">
+                  <Icon />
+                </ThemeIcon>
+                <span className="pl-4">{label}</span>
+              </div>
+              {links && (
+                <div className="transform transition-transform">
+                  {opened ? <IconChevronDown /> : <IconChevronLeft />}
+                </div>
+              )}
+            </Group>
+          </div>
         </div>
-      </Link>
+      )}
 
       <div className="border-l border-gray-300 mx-auto ml-[23px]">
         {links && (
@@ -156,9 +184,20 @@ const mockdata = [
 ];
 
 const Sidenav: React.FC = () => {
+  const location = useLocation();
+  const isMobile = useMediaQuery("(max-width: 320px)");
+  const { setHamburger } = useContext(HamburgerContext);
+
   const links = mockdata.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
+
+  useEffect(() => {
+    setHamburger((prev) => ({
+      ...prev,
+      isOpen: false,
+    }));
+  }, [location]);
 
   const linksStyles: React.CSSProperties = {
     flex: 1,
@@ -167,7 +206,11 @@ const Sidenav: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white w-[300px] p-2 flex flex-col border-r border-gray-300 h-screen fixed">
+    <nav
+      className={`bg-white ${
+        isMobile ? "w-[250px]" : "w-[300px]"
+      }  p-2 flex flex-col border-r border-gray-300 h-screen fixed`}
+    >
       <div className="p-4 text-black border-b border-gray-300">
         <Logo />
       </div>
