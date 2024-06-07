@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import moment from "moment";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
-import { Button } from "@mantine/core";
+import { Button, Tooltip } from "@mantine/core";
 
 import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
-import SelectFilter from "@inovua/reactdatagrid-community/SelectFilter";
 import { useMediaQuery } from "@mantine/hooks";
+import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
+import Create from "./forms/Create";
+import Update from "./forms/Update";
 
 interface DataItems {
   id: string;
@@ -25,9 +27,16 @@ const Table: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 1024px)");
   window.moment = moment;
   const gridRef = useRef<any>(null);
-  const [selectAll, setSelectAll] = useState(false);
+  const [selectAll, setSelectAll] = useState<boolean>(false);
   const [selectedRowIds, setSelectedRowIds] = useState<Set<string>>(new Set());
   const [filteredData, setFilteredData] = useState<DataItems[]>([]);
+  const [initialData, setInitialData] = useState<DataItems[]>([]);
+
+  const [isView, setView] = useState<boolean>(false);
+  const [isImportCsv, setImportCsv] = useState<boolean>(false);
+  const [isCreate, setCreate] = useState<boolean>(false);
+  const [isUpdate, setUpdate] = useState<boolean>(false);
+  const [isDelete, setDelete] = useState<boolean>(false);
 
   // CHANGES | Put all data here
   const [data] = useState<DataItems[]>([
@@ -62,16 +71,11 @@ const Table: React.FC = () => {
     { name: "id", operator: "startsWith", type: "string", value: "" },
     { name: "image", operator: "startsWith", type: "string", value: "" },
     { name: "description", operator: "startsWith", type: "string", value: "" },
-    {
-      name: "role",
-      operator: "inlist",
-      type: "select",
-      value: [],
-    },
     { name: "created_at", operator: "eq", type: "date", value: "" },
     { name: "updated_at", operator: "eq", type: "date", value: "" },
   ];
 
+  // Fetch the new datas
   useEffect(() => {
     setFilteredData(data);
   }, [data]);
@@ -125,24 +129,6 @@ const Table: React.FC = () => {
       shouldComponentUpdate,
     },
     {
-      name: "role",
-      header: "Role",
-      minWidth: isMobile ? 300 : 50,
-      defaultFlex: isMobile ? undefined : 1,
-      cellProps: { align: "center" },
-      shouldComponentUpdate,
-      filterEditor: SelectFilter,
-      filterEditorProps: {
-        multiple: true,
-        wrapMultiple: false,
-        defaultValue: [],
-        dataSource: ["ADMIN", "USER", "SUPER_ADMIN"].map((c) => {
-          return { id: c, label: c };
-        }),
-      },
-    },
-
-    {
       name: "created_at",
       header: "Created At",
       minWidth: isMobile ? 300 : 50,
@@ -167,6 +153,62 @@ const Table: React.FC = () => {
       render: ({ data }) => {
         return moment(data.updated_at).format("MMMM D, YYYY h:mma");
       },
+    },
+    {
+      header: "Action",
+      minWidth: isMobile ? 300 : 50,
+      defaultFlex: isMobile ? undefined : 1,
+      cellProps: { align: "center" },
+      render: ({ data }) => (
+        <div className="flex item-center justify-center gap-3">
+          <div className="flex items-center justify-center">
+            <Tooltip label="View" placement="top" withArrow transition="fade">
+              <IconEye
+                onClick={() => {
+                  // setViewModalOpen(true);
+                  // const selected = tableData.find(
+                  //   (item) => item.id === data.id
+                  // );
+                  // setInitialData(selected);
+                }}
+                className="cursor-pointer hover:text-red-500"
+              />
+            </Tooltip>
+          </div>
+
+          <div>
+            <Tooltip label="Update" placement="top" withArrow transition="fade">
+              <IconEdit
+                onClick={() => {
+                  const selectedItem = filteredData.find(
+                    (item) => item.id === data.id
+                  );
+                  if (selectedItem) {
+                    setInitialData(selectedItem);
+                    setUpdate(true);
+                  }
+                }}
+                className="cursor-pointer hover:text-red-500"
+              />
+            </Tooltip>
+          </div>
+
+          <div>
+            <Tooltip label="Delete" placement="top" withArrow transition="fade">
+              <IconTrash
+                onClick={() => {
+                  // setDeleteModalOpen(true);
+                  // const selected = tableData.find(
+                  //   (item) => item.id === data.id
+                  // );
+                  // setInitialData(selected);
+                }}
+                className="cursor-pointer hover:text-red-500"
+              />
+            </Tooltip>
+          </div>
+        </div>
+      ),
     },
   ];
 
@@ -275,30 +317,57 @@ const Table: React.FC = () => {
 
   return (
     <>
-      <div className="mb-4">
-        <Button
-          variant="filled"
-          className="bg-blue-500 text-white border-none hover:bg-blue-600"
-          onClick={() => {
-            exportCSV();
-          }}
-        >
-          Export
-        </Button>
+      <div className="pt-24">
+        <div className="mb-4 flex gap-2 w-full">
+          <div>
+            <Button
+              variant="filled"
+              className="bg-blue-500 text-white border-none hover:bg-blue-600"
+              onClick={() => {
+                setCreate(true);
+              }}
+            >
+              Create
+            </Button>
+          </div>
+          <div>
+            <Button
+              variant="filled"
+              className="bg-blue-500 text-white border-none hover:bg-blue-600"
+              onClick={() => {
+                exportCSV();
+              }}
+            >
+              Export
+            </Button>
+          </div>
+        </div>
+
+        <ReactDataGrid
+          idProperty="id"
+          columns={columns}
+          dataSource={filteredData}
+          defaultFilterValue={filter}
+          style={gridStyle}
+          pagination
+          defaultLimit={50}
+          checkboxColumn={checkboxColumn}
+          onFilterValueChange={onFilterValueChange}
+          ref={gridRef}
+        />
       </div>
 
-      <ReactDataGrid
-        idProperty="id"
-        columns={columns}
-        dataSource={filteredData}
-        defaultFilterValue={filter}
-        style={gridStyle}
-        pagination
-        defaultLimit={50}
-        checkboxColumn={checkboxColumn}
-        onFilterValueChange={onFilterValueChange}
-        ref={gridRef}
-      />
+      {isCreate && (
+        <Create opened={isCreate} onClose={() => setCreate(false)} />
+      )}
+
+      {isUpdate && (
+        <Update
+          opened={isUpdate}
+          onClose={() => setUpdate(false)}
+          initialData={initialData}
+        />
+      )}
     </>
   );
 };

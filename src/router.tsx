@@ -16,6 +16,7 @@ import VerificationViews from "./views/guest/authentication/VerificationViews";
 // Admin Views
 import LogsViews from "./views/admin/LogsViews";
 import OverviewViews from "./views/admin/OverviewViews";
+import TodoViews from "./views/admin/TodoViews";
 
 interface RouteConfig {
   path: string;
@@ -73,6 +74,10 @@ const routerConfig: Record<string, RouteConfig[]> = {
         {
           path: "/logs",
           element: <LogsViews />,
+        },
+        {
+          path: "/todo",
+          element: <TodoViews />,
         },
       ],
     },

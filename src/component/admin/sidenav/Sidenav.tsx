@@ -20,7 +20,27 @@ import { useMediaQuery } from "@mantine/hooks";
 
 import { HamburgerContext } from "../../../context/HamburgerContext";
 
-// UserButton Component
+// LinksGroup Component
+interface LinksGroupProps {
+  label: string;
+  icon: React.FC<any>;
+  link: string;
+  initiallyOpened?: boolean;
+  links?: { label: string; link: string }[];
+}
+
+const mockDataUserButton = [
+  // { label: "Dashboard", icon: IconGauge, link: "/" },
+  {
+    label: "Settings",
+    icon: IconNotes,
+    links: [
+      { label: "Profile", link: "/profile" },
+      { label: "Logout", link: "#" },
+    ],
+  },
+];
+
 const UserButton: React.FC = () => {
   return (
     <Menu shadow="md">
@@ -35,22 +55,35 @@ const UserButton: React.FC = () => {
       </Menu.Target>
 
       <Menu.Dropdown style={{ width: "200px" }}>
-        <Menu.Label>Settings</Menu.Label>
-        <Menu.Item>Profile</Menu.Item>
-        <Menu.Item>Logout</Menu.Item>
+        {/* Map mockdata array to Menu.Item components */}
+        {mockDataUserButton.map((item, index) => (
+          <React.Fragment key={index}>
+            <Menu.Label>{item.label}</Menu.Label>
+            {item.links ? (
+              item.links.map((linkItem, linkIndex) => (
+                <Link to={linkItem.link}>
+                  <Menu.Item key={linkIndex}>{linkItem.label}</Menu.Item>
+                </Link>
+              ))
+            ) : (
+              <Menu.Item>{item.label}</Menu.Item>
+            )}
+          </React.Fragment>
+        ))}
       </Menu.Dropdown>
     </Menu>
   );
 };
 
-// LinksGroup Component
-interface LinksGroupProps {
-  label: string;
-  icon: React.FC<any>;
-  link: string;
-  initiallyOpened?: boolean;
-  links?: { label: string; link: string }[];
-}
+// Logo Component
+const Logo: React.FC = () => {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="font-bold text-xl">Todo</span>
+      <Code fw={700}>v.0.0.1</Code>
+    </div>
+  );
+};
 
 const LinksGroup: React.FC<LinksGroupProps> = ({
   label,
@@ -139,18 +172,8 @@ const LinksGroup: React.FC<LinksGroupProps> = ({
   );
 };
 
-// Logo Component
-const Logo: React.FC = () => {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="font-bold text-xl">Todo</span>
-      <Code fw={700}>v.0.0.1</Code>
-    </div>
-  );
-};
-
-// Sidenav Component
-const mockdata = [
+// Sidenav Component | CHANGES here if theres new route
+const mockdataSideNav = [
   { label: "Dashboard", icon: IconGauge, link: "/" },
   {
     label: "Management",
@@ -160,6 +183,7 @@ const mockdata = [
       { label: "Accounts", link: "/accounts" },
     ],
   },
+  { label: "Todo", icon: IconGauge, link: "/todo" },
   // {
   //   label: "Releases",
   //   icon: IconCalendarStats,
@@ -188,7 +212,7 @@ const Sidenav: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 320px)");
   const { setHamburger } = useContext(HamburgerContext);
 
-  const links = mockdata.map((item) => (
+  const links = mockdataSideNav.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
 
