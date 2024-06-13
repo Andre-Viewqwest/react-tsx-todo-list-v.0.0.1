@@ -1,6 +1,7 @@
 // Layout
 import AdminLayout from "./layout/admin/AdminLayout";
 import GuestLayout from "./layout/guest/GuestLayout";
+import ProfileLayout from "./layout/admin/ProfileLayout";
 
 // Component
 // import NotFound from "./z-global/NotFound";
@@ -65,6 +66,36 @@ const routerConfig: Record<string, RouteConfig[]> = {
 
   auth: [
     {
+      // path: "/",
+      element: <GuestLayout />,
+      children: [
+        // {
+        //   path: "/",
+        //   element: <HomeViews />,
+        // },
+        {
+          path: "/login",
+          element: <LoginViews />,
+        },
+        {
+          path: "/signup",
+          element: <SignupViews />,
+        },
+        {
+          path: "/verification",
+          element: <VerificationViews />,
+        },
+        {
+          path: "/reset-password",
+          element: <ResetPasswordViews />,
+        },
+        {
+          path: "/update-password",
+          element: <UpdatePasswordViews />,
+        },
+      ],
+    },
+    {
       path: "/",
       element: <AdminLayout />,
       children: [
@@ -82,7 +113,13 @@ const routerConfig: Record<string, RouteConfig[]> = {
         },
         {
           path: "/profile",
-          element: <ProfileViews />,
+          element: <ProfileLayout />,
+          children: [
+            {
+              path: "/profile",
+              element: <ProfileViews />,
+            },
+          ],
         },
       ],
     },

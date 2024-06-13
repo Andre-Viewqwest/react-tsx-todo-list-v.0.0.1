@@ -20,7 +20,16 @@ const App: React.FC = () => {
                   key={childIndex}
                   path={childRoute.path}
                   element={childRoute.element}
-                />
+                >
+                  {childRoute.children &&
+                    childRoute.children.map((nestedRoute, nestedIndex) => (
+                      <Route
+                        key={nestedIndex}
+                        path={nestedRoute.path}
+                        element={nestedRoute.element}
+                      />
+                    ))}
+                </Route>
               ))}
           </Route>
         ))}
